@@ -1,2 +1,69 @@
-import { useEffect,useState } from 'react'; import { Link } from 'react-router-dom'; import { getMedicines } from '../services/medicineApi'
-export default function MedicineList(){const [medicines,setMedicines]=useState([]),[state,setState]=useState('loading');useEffect(()=>{getMedicines().then(x=>{setMedicines(x);setState('ready')}).catch(()=>setState('error'))},[]);return <main className="shell"><header><div><p className="eyebrow">INVENTORY</p><h1>Medicine List</h1></div><Link className="secondary button" to="/home">Home</Link></header>{state==='loading'&&<p className="message">Loading medicines...</p>}{state==='error'&&<p className="message error">Unable to load medicines. Please try again.</p>}{state==='ready'&&<section className="card table-wrap"><table><thead><tr><th>Brand Name</th><th>Category</th><th>Stock Quantity</th><th>Action</th></tr></thead><tbody>{medicines.length?medicines.map(m=><tr key={m.id}><td>{m.brand_name}</td><td>{m.category}</td><td>{m.stock_quantity}</td><td><Link to={`/medicines/${m.id}`}>View Details</Link></td></tr>):<tr><td colSpan="4">No medicines yet. Add the first record.</td></tr>}</tbody></table></section>}<Link className="fab" to="/medicines/add" aria-label="Add medicine">+</Link></main>}
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { getMedicines } from "../services/medicineApi";
+export default function MedicineList() {
+  const [medicines, setMedicines] = useState([]),
+    [state, setState] = useState("loading");
+  useEffect(() => {
+    getMedicines()
+      .then((x) => {
+        setMedicines(x);
+        setState("ready");
+      })
+      .catch(() => setState("error"));
+  }, []);
+  return (
+    <main className="shell">
+      <header>
+        <div>
+          <p className="eyebrow">INVENTORY</p>
+          <h1>Medicine List</h1>
+        </div>
+        <Link className="secondary button" to="/home">
+          Home
+        </Link>
+      </header>
+      {state === "loading" && <p className="message">Loading medicines...</p>}
+      {state === "error" && (
+        <p className="message error">
+          Unable to load medicines. Please try again.
+        </p>
+      )}
+      {state === "ready" && (
+        <section className="card table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Brand Name</th>
+                <th>Category</th>
+                <th>Stock Quantity</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {medicines.length ? (
+                medicines.map((m) => (
+                  <tr key={m.id}>
+                    <td>{m.brand_name}</td>
+                    <td>{m.category}</td>
+                    <td>{m.stock_quantity}</td>
+                    <td>
+                      <Link to={`/medicines/${m.id}`}>View Details</Link>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4">No medicines yet. Add the first record.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </section>
+      )}
+      <Link className="fab" to="/medicines/add" aria-label="Add medicine">
+        +
+      </Link>
+    </main>
+  );
+}

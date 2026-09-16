@@ -1,3 +1,47 @@
-import { useEffect,useState } from 'react'; import { useNavigate,useParams } from 'react-router-dom'; import { getMedicine } from '../services/medicineApi'
-export default function MedicineDetails(){const {id}=useParams(),navigate=useNavigate(),[medicine,setMedicine]=useState(null),[state,setState]=useState('loading');useEffect(()=>{getMedicine(id).then(x=>{setMedicine(x);setState('ready')}).catch(e=>setState(e.status===404?'missing':'error'))},[id]);return <main className="shell narrow"><button className="secondary" onClick={()=>navigate('/medicines')}>Back</button>{state==='loading'&&<p className="message">Loading medicine...</p>}{state==='missing'&&<p className="message error">Medicine not found.</p>}{state==='error'&&<p className="message error">Unable to load medicine. Please try again.</p>}{state==='ready'&&<section className="card details"><p className="eyebrow">MEDICINE RECORD #{medicine.id}</p><h1>Medicine Details</h1><dl><dt>Brand Name</dt><dd>{medicine.brand_name}</dd><dt>Category</dt><dd>{medicine.category}</dd><dt>Stock Quantity</dt><dd>{medicine.stock_quantity}</dd></dl></section>}</main>}
-
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { getMedicine } from "../services/medicineApi";
+export default function MedicineDetails() {
+  const { id } = useParams(),
+    navigate = useNavigate(),
+    [medicine, setMedicine] = useState(null),
+    [state, setState] = useState("loading");
+  useEffect(() => {
+    getMedicine(id)
+      .then((x) => {
+        setMedicine(x);
+        setState("ready");
+      })
+      .catch((e) => setState(e.status === 404 ? "missing" : "error"));
+  }, [id]);
+  return (
+    <main className="shell narrow">
+      <button className="secondary" onClick={() => navigate("/medicines")}>
+        Back
+      </button>
+      {state === "loading" && <p className="message">Loading medicine...</p>}
+      {state === "missing" && (
+        <p className="message error">Medicine not found.</p>
+      )}
+      {state === "error" && (
+        <p className="message error">
+          Unable to load medicine. Please try again.
+        </p>
+      )}
+      {state === "ready" && (
+        <section className="card details">
+          <p className="eyebrow">MEDICINE RECORD #{medicine.id}</p>
+          <h1>Medicine Details</h1>
+          <dl>
+            <dt>Brand Name</dt>
+            <dd>{medicine.brand_name}</dd>
+            <dt>Category</dt>
+            <dd>{medicine.category}</dd>
+            <dt>Stock Quantity</dt>
+            <dd>{medicine.stock_quantity}</dd>
+          </dl>
+        </section>
+      )}
+    </main>
+  );
+}

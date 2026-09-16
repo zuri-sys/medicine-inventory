@@ -1,3 +1,51 @@
-import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
-export default function Login() { const [username,setUsername]=useState(''); const [password,setPassword]=useState(''); const [error,setError]=useState(''); const navigate=useNavigate(); if(sessionStorage.getItem('authenticated')==='true') return <Navigate to="/home" replace />; function submit(e){e.preventDefault(); if(username==='pharmacist'&&password==='med123'){sessionStorage.setItem('authenticated','true');navigate('/home')}else setError('Invalid username or password.')} return <main className="centered"><section className="auth card"><p className="eyebrow">MEDSTOCK</p><h1>Pharmacist Login</h1><p>Sign in to manage medicine inventory.</p><form onSubmit={submit}><label>Username<input value={username} onChange={e=>setUsername(e.target.value)} autoComplete="username" /></label><label>Password<input type="password" value={password} onChange={e=>setPassword(e.target.value)} autoComplete="current-password" /></label>{error&&<p className="message error" role="alert">{error}</p>}<button>Login</button></form></section></main> }
+import { useState } from "react";
+import { Navigate, useNavigate } from "react-router-dom";
+export default function Login() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  if (sessionStorage.getItem("authenticated") === "true")
+    return <Navigate to="/home" replace />;
+  function submit(e) {
+    e.preventDefault();
+    if (username === "pharmacist" && password === "med123") {
+      sessionStorage.setItem("authenticated", "true");
+      navigate("/home");
+    } else setError("Invalid username or password.");
+  }
+  return (
+    <main className="centered">
+      <section className="auth card">
+        <p className="eyebrow">MEDSTOCK</p>
+        <h1>Pharmacist Login</h1>
+        <p>Sign in to manage medicine inventory.</p>
+        <form onSubmit={submit}>
+          <label>
+            Username
+            <input
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              autoComplete="username"
+            />
+          </label>
+          <label>
+            Password
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              autoComplete="current-password"
+            />
+          </label>
+          {error && (
+            <p className="message error" role="alert">
+              {error}
+            </p>
+          )}
+          <button>Login</button>
+        </form>
+      </section>
+    </main>
+  );
+}
